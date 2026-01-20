@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Features from './Features';
 
 interface BackendData {
   message: string;
@@ -6,7 +8,7 @@ interface BackendData {
   timestamp: string;
 }
 
-function App() {
+function Home() {
   const [backendData, setBackendData] = useState<BackendData | null>(null)
   const [loading, setLoading] = useState(true)
   const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
@@ -45,6 +47,9 @@ function App() {
           </div>
           
           <div className="flex items-center gap-6">
+            <Link to="/features" className="text-sm font-bold text-slate-400 hover:text-white transition-colors mr-4">
+              Features
+            </Link>
             <div className={`flex items-center gap-2 px-3 py-1 rounded-full border text-[10px] font-bold uppercase tracking-widest ${
               backendData?.environment === 'production' 
                 ? 'border-green-500/50 text-green-400 bg-green-500/10'
@@ -82,9 +87,9 @@ function App() {
             </p>
 
             <div className="flex flex-wrap gap-4 pt-4">
-              <button className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-blue-500/20">
+              <Link to="/features" className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xl shadow-blue-500/20">
                 Explore Workflow
-              </button>
+              </Link>
               <button className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-[0.98] text-white">
                 View Docs
               </button>
@@ -133,23 +138,6 @@ function App() {
             </div>
           </div>
         </div>
-
-        {/* Features */}
-        <div className="mt-40 grid md:grid-cols-3 gap-8">
-          {[
-            { title: 'Isolated Config', desc: 'Separate environment variables for every stage of your release pipeline.', color: 'from-blue-500 to-blue-600' },
-            { title: 'Automated CI/CD', desc: 'Instant deployments triggered by branch-specific push events.', color: 'from-cyan-500 to-blue-500' },
-            { title: 'Branch Isolation', desc: 'Secure, independent database clusters for Dev, Stage, and Production.', color: 'from-blue-600 to-indigo-600' }
-          ].map((feature, i) => (
-            <div key={i} className="group p-8 rounded-3xl bg-white/5 hover:bg-white/[0.08] border border-white/5 transition-all duration-300">
-              <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${feature.color} mb-6 shadow-lg shadow-blue-500/20 flex items-center justify-center font-bold text-xl`}>
-                {i + 1}
-              </div>
-              <h4 className="text-xl font-bold mb-3 text-white">{feature.title}</h4>
-              <p className="text-slate-400 text-sm leading-relaxed">{feature.desc}</p>
-            </div>
-          ))}
-        </div>
       </main>
 
       <footer className="mt-20 py-12 border-t border-white/5 text-center">
@@ -159,6 +147,17 @@ function App() {
       </footer>
     </div>
   )
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/features" element={<Features />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App
