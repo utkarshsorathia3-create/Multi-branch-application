@@ -11,7 +11,11 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello from Backend!');
+  res.json({
+    message: 'Hello from Multi-branch Backend!',
+    environment: process.env.APP_ENV || 'undefined',
+    timestamp: new Date().toISOString()
+  });
 });
 
 app.listen(port, () => {
